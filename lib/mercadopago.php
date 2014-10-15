@@ -98,6 +98,27 @@ class MP {
     }
 
     /**
+     * Refund accredited payment - partial
+     * @param int $id
+     * @return array(json)
+     */
+    public function refund_payment_partial($id, $data = array()) {
+        $access_token = $this->get_access_token();
+        
+        $refund_data = array(
+            "amount" => (int) $data['amount'],
+            "metadata" => array(
+                "reason" => $data['reason'],
+                "external_reference" => $data['external_reference']
+                )
+            );
+            
+        $response = MPRestClient::post("/collections/" . $id . "/refunds?access_token=" . $access_token, $refund_data);
+    
+        return $response;
+    }        
+
+    /**
      * Cancel pending payment
      * @param int $id
      * @return array(json)
